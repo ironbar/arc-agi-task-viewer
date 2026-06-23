@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ARC-AGI Tasks Viewer</title>
+    <meta name="description" content="A minimal viewer for ARC-AGI-1 and ARC-AGI-2 public tasks.">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div>
+        <h1>ARC-AGI Tasks</h1>
+        <p>Minimal thumbnails for ARC-AGI-1 and ARC-AGI-2 public datasets.</p>
+      </div>
+      <a class="source-link" href="https://arcprize.org/tasks" target="_blank" rel="noreferrer">ARC Prize tasks</a>
+    </header>
+
+    <main>
+      <nav class="tabs" aria-label="Dataset tabs">
+        <button class="tab is-active" type="button" data-tab="arc1Training">ARC-AGI-1 training</button>
+        <button class="tab" type="button" data-tab="arc1Evaluation">ARC-AGI-1 evaluation</button>
+        <button class="tab" type="button" data-tab="arc2Training">ARC-AGI-2 training</button>
+        <button class="tab" type="button" data-tab="arc2Evaluation">ARC-AGI-2 evaluation</button>
+      </nav>
+
+      <section class="toolbar" aria-label="Current dataset controls">
+        <div>
+          <h2 id="dataset-title">ARC-AGI-1 training</h2>
+          <p id="dataset-count">Loading tasks...</p>
+        </div>
+        <label class="search-label">
+          <span>Search task</span>
+          <input id="task-search" type="search" autocomplete="off" spellcheck="false" placeholder="e.g. 007bbfb7">
+        </label>
+      </section>
+
+      <div class="table-wrap">
+        <div class="column-header" aria-hidden="true">
+          <span>Task name</span>
+          <span>Training samples</span>
+          <span>Test sample</span>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <colgroup>
+              <col class="task-column">
+              <col class="training-column">
+              <col class="test-column">
+            </colgroup>
+            <thead class="visually-hidden">
+              <tr>
+                <th scope="col">Task name</th>
+                <th scope="col">Training samples</th>
+                <th scope="col">Test sample</th>
+              </tr>
+            </thead>
+            <tbody id="task-rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <template id="task-row-template">
+      <tr>
+        <th scope="row">
+          <a class="task-link" target="_blank" rel="noreferrer"></a>
+        </th>
+        <td>
+          <img class="thumbnail thumbnail-large" loading="lazy" decoding="async" alt="">
+        </td>
+        <td>
+          <img class="thumbnail thumbnail-small" loading="lazy" decoding="async" alt="">
+        </td>
+      </tr>
+    </template>
+
+    <script src="task-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
