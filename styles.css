@@ -291,11 +291,16 @@ tbody th {
   margin: 0;
 }
 
+.viewer-image-wrap {
+  position: relative;
+  justify-self: center;
+  max-width: 100%;
+}
+
 #viewer-image {
   display: block;
   max-width: 100%;
   max-height: calc(100vh - 140px);
-  margin: 0 auto;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 8px;
   background: #000;
@@ -311,12 +316,12 @@ tbody th {
 
 .viewer-close {
   position: absolute;
-  top: 18px;
-  right: 18px;
+  top: 10px;
+  right: 10px;
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 6px;
   padding: 9px 12px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(20, 20, 20, 0.72);
   color: white;
   cursor: pointer;
   font: inherit;
