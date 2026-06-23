@@ -17,6 +17,10 @@ const title = document.querySelector("#dataset-title");
 const count = document.querySelector("#dataset-count");
 const search = document.querySelector("#task-search");
 const rowTemplate = document.querySelector("#task-row-template");
+const viewer = document.querySelector("#image-viewer");
+const viewerImage = document.querySelector("#viewer-image");
+const viewerCaption = document.querySelector("#viewer-caption");
+const viewerClose = document.querySelector(".viewer-close");
 
 function thumbnailUrl(taskId, size) {
   return `${THUMBNAIL_BASE}/${taskId}-${size}.jpg`;
@@ -90,6 +94,23 @@ function render() {
   renderRows(taskIds);
 }
 
+function openImageViewer(image) {
+  viewerImage.src = image.src;
+  viewerImage.alt = image.alt;
+  viewerCaption.textContent = image.alt;
+  viewer.classList.add("is-open");
+  viewer.setAttribute("aria-hidden", "false");
+  viewerClose.focus();
+}
+
+function closeImageViewer() {
+  viewer.classList.remove("is-open");
+  viewer.setAttribute("aria-hidden", "true");
+  viewerImage.removeAttribute("src");
+  viewerImage.alt = "";
+  viewerCaption.textContent = "";
+}
+
 document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => {
     state.activeDataset = tab.dataset.tab;
@@ -102,6 +123,27 @@ document.querySelectorAll(".tab").forEach((tab) => {
 search.addEventListener("input", () => {
   state.query = search.value;
   render();
+});
+
+rows.addEventListener("click", (event) => {
+  const image = event.target.closest(".thumbnail");
+  if (!image) {
+    return;
+  }
+
+  openImageViewer(image);
+});
+
+viewer.addEventListener("click", (event) => {
+  if (event.target === viewer || event.target === viewerClose) {
+    closeImageViewer();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && viewer.classList.contains("is-open")) {
+    closeImageViewer();
+  }
 });
 
 render();

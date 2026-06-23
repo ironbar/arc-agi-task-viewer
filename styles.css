@@ -256,6 +256,7 @@ tbody th {
   border: 1px solid var(--line);
   border-radius: 6px;
   background: #202020;
+  cursor: zoom-in;
 }
 
 .thumbnail-small {
@@ -267,6 +268,67 @@ tbody th {
   text-align: center;
 }
 
+.image-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px 24px;
+  background: rgba(10, 10, 10, 0.88);
+}
+
+.image-viewer.is-open {
+  display: flex;
+}
+
+.viewer-frame {
+  display: grid;
+  gap: 12px;
+  width: min(100%, 1180px);
+  max-height: 100%;
+  margin: 0;
+}
+
+#viewer-image {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 140px);
+  margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 8px;
+  background: #000;
+  object-fit: contain;
+}
+
+#viewer-caption {
+  color: white;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 14px;
+  text-align: center;
+}
+
+.viewer-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 6px;
+  padding: 9px 12px;
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.viewer-close:hover,
+.viewer-close:focus-visible {
+  background: rgba(255, 255, 255, 0.2);
+  outline: none;
+}
+
 @media (max-width: 760px) {
   .site-header,
   .toolbar {
@@ -276,5 +338,9 @@ tbody th {
 
   .tabs {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .image-viewer {
+    padding: 56px 12px 12px;
   }
 }
