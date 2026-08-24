@@ -3,89 +3,64 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ARC-AGI Tasks Viewer</title>
-    <meta name="description" content="A minimal viewer for ARC-AGI-1 and ARC-AGI-2 public tasks.">
-    <link rel="stylesheet" href="styles.css">
+    <title>ARC-AGI Task Gallery</title>
+    <meta name="description" content="Browse complete train and test examples for every public ARC-AGI-1 and ARC-AGI-2 task.">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="gallery.css">
   </head>
   <body>
     <header class="site-header">
-      <div>
-        <h1>ARC-AGI Tasks</h1>
-        <p>Minimal thumbnails for ARC-AGI-1 and ARC-AGI-2 public datasets.</p>
-      </div>
-      <a class="source-link" href="https://arcprize.org/tasks" target="_blank" rel="noreferrer">ARC Prize tasks</a>
+      <a class="brand" href="index.html" aria-label="ARC-AGI Task Gallery home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span>ARC-AGI Task Gallery</span>
+      </a>
+      <nav class="header-links" aria-label="Other viewers">
+        <a href="legacy.html">Classic viewer</a>
+        <a href="https://arcprize.org/tasks" target="_blank" rel="noreferrer">ARC Prize</a>
+      </nav>
     </header>
 
     <main>
-      <nav class="tabs" aria-label="Dataset tabs">
-        <button class="tab is-active" type="button" data-tab="arc1Training">ARC-AGI-1 training</button>
-        <button class="tab" type="button" data-tab="arc1Evaluation">ARC-AGI-1 evaluation</button>
-        <button class="tab" type="button" data-tab="arc2Training">ARC-AGI-2 training</button>
-        <button class="tab" type="button" data-tab="arc2Evaluation">ARC-AGI-2 evaluation</button>
+      <section class="intro">
+        <p class="eyebrow">Complete public tasks</p>
+        <h1>See the whole puzzle.</h1>
+        <p class="intro-copy">Every training and test example, input above output. Test examples are grouped in gray.</p>
+      </section>
+
+      <nav class="dataset-tabs" aria-label="Choose a dataset">
+        <button class="dataset-tab is-active" type="button" data-dataset="arc1Training"><span>ARC-AGI-1</span><small>Training · 400</small></button>
+        <button class="dataset-tab" type="button" data-dataset="arc1Evaluation"><span>ARC-AGI-1</span><small>Evaluation · 400</small></button>
+        <button class="dataset-tab" type="button" data-dataset="arc2Training"><span>ARC-AGI-2</span><small>Training · 1,000</small></button>
+        <button class="dataset-tab" type="button" data-dataset="arc2Evaluation"><span>ARC-AGI-2</span><small>Evaluation · 120</small></button>
       </nav>
 
-      <section class="toolbar" aria-label="Current dataset controls">
-        <div>
-          <h2 id="dataset-title">ARC-AGI-1 training</h2>
-          <p id="dataset-count">Loading tasks...</p>
-        </div>
-        <label class="search-label">
-          <span>Search task</span>
-          <input id="task-search" type="search" autocomplete="off" spellcheck="false" placeholder="e.g. 007bbfb7">
+      <section class="gallery-toolbar" aria-labelledby="dataset-title">
+        <div><h2 id="dataset-title">ARC-AGI-1 training</h2><p id="dataset-count" aria-live="polite">400 tasks</p></div>
+        <label class="search-field">
+          <span class="visually-hidden">Search task ID</span>
+          <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"></circle><path d="m16 16 4 4"></path></svg>
+          <input id="task-search" type="search" autocomplete="off" spellcheck="false" placeholder="Search task ID">
         </label>
       </section>
 
-      <div class="table-wrap">
-        <div class="column-header" aria-hidden="true">
-          <span>Task name</span>
-          <span>Training samples</span>
-          <span>Test sample</span>
-        </div>
-        <div class="table-scroll">
-          <table>
-            <colgroup>
-              <col class="task-column">
-              <col class="training-column">
-              <col class="test-column">
-            </colgroup>
-            <thead class="visually-hidden">
-              <tr>
-                <th scope="col">Task name</th>
-                <th scope="col">Training samples</th>
-                <th scope="col">Test sample</th>
-              </tr>
-            </thead>
-            <tbody id="task-rows"></tbody>
-          </table>
-        </div>
-      </div>
+      <section id="task-gallery" class="task-gallery" aria-label="Task thumbnails"></section>
+      <p id="empty-state" class="empty-state" hidden>No tasks match that ID.</p>
+      <div id="load-sentinel" class="load-sentinel" aria-hidden="true"></div>
     </main>
 
-    <template id="task-row-template">
-      <tr>
-        <th scope="row">
-          <a class="task-link" target="_blank" rel="noreferrer"></a>
-        </th>
-        <td>
-          <img class="thumbnail thumbnail-large" loading="lazy" decoding="async" alt="">
-        </td>
-        <td>
-          <img class="thumbnail thumbnail-small" loading="lazy" decoding="async" alt="">
-        </td>
-      </tr>
+    <template id="task-card-template">
+      <article class="task-card">
+        <header><a class="task-link" target="_blank" rel="noreferrer"></a><span>Open task ↗</span></header>
+        <button class="thumbnail-button" type="button"><img loading="lazy" decoding="async" alt=""></button>
+      </article>
     </template>
 
-    <div class="image-viewer" id="image-viewer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Expanded task thumbnail">
-      <figure class="viewer-frame">
-        <div class="viewer-image-wrap">
-          <img id="viewer-image" alt="">
-          <button class="viewer-close" type="button">Close</button>
-        </div>
-        <figcaption id="viewer-caption"></figcaption>
-      </figure>
-    </div>
+    <dialog id="image-viewer" aria-labelledby="viewer-title">
+      <div class="viewer-header"><h2 id="viewer-title"></h2><button id="viewer-close" type="button" aria-label="Close expanded thumbnail">Close</button></div>
+      <div class="viewer-canvas"><img id="viewer-image" alt=""></div>
+    </dialog>
 
     <script src="task-data.js"></script>
-    <script src="app.js"></script>
+    <script src="gallery.js"></script>
   </body>
 </html>
