@@ -62,6 +62,12 @@ h1 {
   color: var(--muted);
 }
 
+.header-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .source-link {
   flex: 0 0 auto;
   border: 1px solid var(--line);
