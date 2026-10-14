@@ -27,6 +27,7 @@
         <button class="dataset-tab" type="button" data-dataset="arc1Evaluation"><span>ARC-AGI-1</span><small>Evaluation · 400</small></button>
         <button class="dataset-tab" type="button" data-dataset="arc2Training"><span>ARC-AGI-2</span><small>Training · 1,000</small></button>
         <button class="dataset-tab" type="button" data-dataset="arc2Evaluation"><span>ARC-AGI-2</span><small>Evaluation · 120</small></button>
+        <button class="dataset-tab" type="button" data-dataset="custom"><span>Custom tasks</span><small>Your task IDs</small></button>
       </nav>
 
       <section class="gallery-toolbar" aria-labelledby="dataset-title">
@@ -36,6 +37,13 @@
           <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"></circle><path d="m16 16 4 4"></path></svg>
           <input id="task-search" type="search" autocomplete="off" spellcheck="false" placeholder="Search task ID">
         </label>
+      </section>
+
+      <section id="custom-tasks" class="custom-tasks" aria-label="Choose custom tasks" hidden>
+        <label for="custom-task-ids">Task IDs</label>
+        <p id="custom-task-help">Enter comma-separated IDs from any dataset. Tasks appear in your entered order; duplicates are shown once.</p>
+        <textarea id="custom-task-ids" rows="3" autocomplete="off" spellcheck="false" aria-describedby="custom-task-help custom-task-feedback" placeholder="007bbfb7, 00d62c1b, 017c7c7b"></textarea>
+        <p id="custom-task-feedback" role="status" hidden></p>
       </section>
 
       <section id="task-gallery" class="task-gallery" aria-label="Task thumbnails"></section>

@@ -3,10 +3,20 @@ const DATASETS = {
   arc1Evaluation: { name: "ARC-AGI-1 evaluation", directory: "arc1-evaluation" },
   arc2Training: { name: "ARC-AGI-2 training", directory: "arc2-training" },
   arc2Evaluation: { name: "ARC-AGI-2 evaluation", directory: "arc2-evaluation" },
+  custom: { name: "Custom tasks" },
 };
 
+const taskDirectories = new Map();
+Object.entries(window.ARC_TASKS).forEach(([datasetKey, taskIds]) => {
+  taskIds.forEach((taskId) => {
+    if (!taskDirectories.has(taskId)) {
+      taskDirectories.set(taskId, DATASETS[datasetKey].directory);
+    }
+  });
+});
+
 const PAGE_SIZE = 48;
-const state = { activeDataset: "arc1Training", query: "", rendered: 0 };
+const state = { activeDataset: "arc1Training", query: "", rendered: 0, customTaskIds: [] };
 
 const gallery = document.querySelector("#task-gallery");
 const cardTemplate = document.querySelector("#task-card-template");
@@ -19,15 +29,27 @@ const viewer = document.querySelector("#image-viewer");
 const viewerImage = document.querySelector("#viewer-image");
 const viewerTitle = document.querySelector("#viewer-title");
 const viewerClose = document.querySelector("#viewer-close");
+const customTasks = document.querySelector("#custom-tasks");
+const customTaskInput = document.querySelector("#custom-task-ids");
+const customTaskFeedback = document.querySelector("#custom-task-feedback");
+
+function activeTaskIds() {
+  return state.activeDataset === "custom"
+    ? state.customTaskIds
+    : window.ARC_TASKS[state.activeDataset] || [];
+}
 
 function visibleTaskIds() {
-  const taskIds = window.ARC_TASKS[state.activeDataset] || [];
+  const taskIds = activeTaskIds();
   const query = state.query.trim().toLowerCase();
   return query ? taskIds.filter((taskId) => taskId.includes(query)) : taskIds;
 }
 
 function thumbnailUrl(taskId) {
-  return `thumbnails/${DATASETS[state.activeDataset].directory}/${taskId}.png`;
+  const directory = state.activeDataset === "custom"
+    ? taskDirectories.get(taskId)
+    : DATASETS[state.activeDataset].directory;
+  return `thumbnails/${directory}/${taskId}.png`;
 }
 
 function taskUrl(taskId) {
@@ -36,7 +58,7 @@ function taskUrl(taskId) {
 
 function updateHeading(taskIds) {
   const dataset = DATASETS[state.activeDataset];
-  const allCount = (window.ARC_TASKS[state.activeDataset] || []).length;
+  const allCount = activeTaskIds().length;
   datasetTitle.textContent = dataset.name;
   datasetCount.textContent = state.query ? `${taskIds.length} of ${allCount} tasks` : `${allCount.toLocaleString()} tasks`;
   document.title = `${dataset.name} - ARC-AGI Task Gallery`;
@@ -73,6 +95,9 @@ function resetGallery() {
   state.rendered = 0;
   gallery.replaceChildren();
   emptyState.hidden = taskIds.length !== 0;
+  emptyState.textContent = state.activeDataset === "custom" && !state.customTaskIds.length
+    ? "Enter valid task IDs above to build your custom set."
+    : "No tasks match that ID.";
   sentinel.hidden = taskIds.length === 0;
   updateHeading(taskIds);
   renderMore();
@@ -82,6 +107,7 @@ function selectDataset(datasetKey) {
   state.activeDataset = datasetKey;
   state.query = "";
   search.value = "";
+  customTasks.hidden = datasetKey !== "custom";
   document.querySelectorAll(".dataset-tab").forEach((tab) => {
     const isActive = tab.dataset.dataset === datasetKey;
     tab.classList.toggle("is-active", isActive);
@@ -109,6 +135,15 @@ document.querySelectorAll(".dataset-tab").forEach((tab) => {
 
 search.addEventListener("input", () => {
   state.query = search.value;
+  resetGallery();
+});
+
+customTaskInput.addEventListener("input", () => {
+  const taskIds = [...new Set(customTaskInput.value.split(",").map((id) => id.trim().toLowerCase()).filter(Boolean))];
+  state.customTaskIds = taskIds.filter((id) => taskDirectories.has(id));
+  const unknownIds = taskIds.filter((id) => !taskDirectories.has(id));
+  customTaskFeedback.hidden = unknownIds.length === 0;
+  customTaskFeedback.textContent = unknownIds.length ? `Unknown task IDs: ${unknownIds.join(", ")}` : "";
   resetGallery();
 });
 

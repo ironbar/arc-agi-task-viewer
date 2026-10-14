@@ -23,7 +23,7 @@ body {
   line-height: 1.5;
 }
 
-button, input { font: inherit; }
+button, input, textarea { font: inherit; }
 a { color: inherit; }
 
 .site-header {
@@ -71,7 +71,7 @@ main { width: min(100% - 40px, 1440px); margin: 0 auto; padding: 34px 0 80px; }
 
 .dataset-tabs {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 10px;
   margin: 0 0 34px;
 }
@@ -123,6 +123,12 @@ main { width: min(100% - 40px, 1440px); margin: 0 auto; padding: 34px 0 80px; }
 .search-field input { width: 100%; border: 0; outline: 0; padding: 11px 12px 11px 9px; background: transparent; color: var(--ink); }
 
 .task-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+
+.custom-tasks { margin-bottom: 24px; }
+.custom-tasks label { font-weight: 700; }
+.custom-tasks p { margin: 6px 0 10px; color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
+.custom-tasks textarea { display: block; width: 100%; resize: vertical; border: 1px solid var(--line); border-radius: 9px; padding: 11px 12px; background: var(--surface); color: var(--ink); }
+.custom-tasks textarea:focus-visible { outline: 3px solid var(--accent-soft); border-color: var(--accent); }
 
 .task-card {
   min-width: 0;

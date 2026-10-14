@@ -10,6 +10,8 @@ A tiny static website for browsing complete ARC-AGI-1 and ARC-AGI-2 public tasks
 
 All 1,920 public-task thumbnails are checked into `thumbnails/`. The default gallery loads them in small batches, while the original ARC Prize-thumbnail table remains available at `legacy.html`.
 
+Use the **Custom tasks** tab to view a comma-separated list of task IDs from any of the four datasets. The gallery keeps your entered order, ignores duplicates and surrounding whitespace, and reports unknown IDs. Your list is retained when switching tabs during the current page session, and the search field filters your custom set.
+
 To reproduce them, clone the official datasets outside this repository and run:
 
 ```sh
