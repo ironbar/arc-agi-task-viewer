@@ -53,7 +53,13 @@
 
     <template id="task-card-template">
       <article class="task-card">
-        <header><a class="task-link" target="_blank" rel="noreferrer"></a><span>Open task ↗</span></header>
+        <header>
+          <div class="task-details">
+            <a class="task-link" target="_blank" rel="noreferrer"></a>
+            <div class="task-partitions" aria-label="Dataset partitions" hidden></div>
+          </div>
+          <span class="task-open-hint">Open task ↗</span>
+        </header>
         <button class="thumbnail-button" type="button"><img loading="lazy" decoding="async" alt=""></button>
       </article>
     </template>

@@ -73,6 +73,17 @@ function createCard(taskId) {
 
   link.href = taskUrl(taskId);
   link.textContent = taskId;
+  if (state.activeDataset === "custom") {
+    const partitions = card.querySelector(".task-partitions");
+    Object.entries(window.ARC_TASKS).forEach(([datasetKey, taskIds]) => {
+      if (taskIds.includes(taskId)) {
+        const badge = document.createElement("span");
+        badge.textContent = DATASETS[datasetKey].name;
+        partitions.append(badge);
+      }
+    });
+    partitions.hidden = false;
+  }
   image.src = thumbnailUrl(taskId);
   image.alt = description;
   button.dataset.taskId = taskId;
